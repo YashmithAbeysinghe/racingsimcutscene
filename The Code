@@ -1,0 +1,31 @@
+local TweenService = game:GetService("TweenService")
+
+local gui = script.Parent
+local title = gui.Text.Title
+local subtitle = gui.Text.Subtitle              -- Variables for Text
+
+local camera = workspace.CurrentCamera
+camera.CameraType = Enum.CameraType.Scriptable
+camera.CameraSubject = workspace.Cam1
+camera.CFrame = workspace.Cam1.CFrame             --Variables for Camera
+camera.FieldOfView = 50                          --Sets FieldOfView
+
+local config = TweenInfo.new(8, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0) 
+--(How long it lasts for, How it moves to other camera, Its Direction, delay, Repeat?, How many times repeat if true)
+
+local camTween = TweenService:Create(camera, config, {CFrame = workspace.Cam2.CFrame}) --Creating a TweenService
+
+camTween:Play()
+wait(1)
+title.Text = "Racing Simulator"
+subtitle.Text = "Made by Yashi Studios"
+camTween.Completed:Wait()                    --Text that plays when you start the game
+
+camera.CameraType = Enum.CameraType.Custom
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+camera.CameraSubject = humanoid
+camera.FieldOfView = 70  --Starts sequence only when the player has joined, puts FOV back to 70 after cutscene.
+
+gui.Enabled = false  --Stop the code once its run once.
